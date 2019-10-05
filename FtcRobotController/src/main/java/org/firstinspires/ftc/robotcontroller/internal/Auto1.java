@@ -22,7 +22,7 @@ public class Auto1 extends LinearOpMode {
     }
 
     //moves robot forward x inches with y speed
-    public void forward(int inches, int speed) {
+    public void leftinches(int inches, int speed) {
 
         //sets the target position for each motor
         frontLeftMotor.setTargetPosition(frontLeftMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
