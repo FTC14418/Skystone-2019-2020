@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.robotcontroller.internal;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class Auto1 extends LinearOpMode {
+@Autonomous(name="moveLeftToPark")
+public class moveLeft extends LinearOpMode {
 
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
@@ -11,24 +13,25 @@ public class Auto1 extends LinearOpMode {
     private DcMotor backRightMotor;
 
     //Set up Variables
-    static final double COUNTS_PER_MOTOR_REV    = 1440 ;
-    static final double DRIVE_GEAR_REDUCTION    = 2.0 ;
-    static final double WHEEL_DIAMETER_INCHES   = 4.0 ;
+    static final double COUNTS_PER_MOTOR_REV    = 1120 ;
+    static final double DRIVE_GEAR_REDUCTION    = 1 ;
+    static final double WHEEL_DIAMETER_INCHES   = 3.25 ;
     static final double COUNTS_PER_INCH         =(COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION)/(WHEEL_DIAMETER_INCHES * Math.PI);
 
     //autonomous period
     public void autonomous() {
-        //stuff
+        forward(12,1);
     }
 
     //moves robot forward x inches with y speed
-    public void leftinches(int inches, int speed) {
+    public void forward(int inches, int speed) {
 
-        //sets the target position for each motor
+        //sets
+        // the target position for each motor
         frontLeftMotor.setTargetPosition(frontLeftMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
         frontRightMotor.setTargetPosition(frontRightMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
-        backLeftMotor.setTargetPosition(frontLeftMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
-        backRightMotor.setTargetPosition(frontLeftMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
+        backLeftMotor.setTargetPosition(backLeftMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
+        backRightMotor.setTargetPosition(backRightMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
 
         //turns on run to position
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
