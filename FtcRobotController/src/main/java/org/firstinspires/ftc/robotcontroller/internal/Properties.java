@@ -12,4 +12,7 @@ public class Properties {
     public static final double WHEEL_DIAMETER = 90 / 25.4;
 
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+
+    public static final String LEFT_ARM = "leftArm";
+    public static final String RIGHT_ARM = "rightArm";
 }
