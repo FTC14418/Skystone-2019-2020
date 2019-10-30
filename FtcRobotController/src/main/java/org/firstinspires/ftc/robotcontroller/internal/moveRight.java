@@ -20,10 +20,10 @@ public class moveRight extends LinearOpMode {
 
     //autonomous period
     public void autonomous() {
-        frontLeftMotor.setPower(-1);
+        frontLeftMotor.setPower(1);
         frontRightMotor.setPower(1);
         backLeftMotor.setPower(1);
-        backRightMotor.setPower(-1);
+        backRightMotor.setPower(1);
 
         sleep(100);
 
