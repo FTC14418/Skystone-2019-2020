@@ -32,7 +32,7 @@ public class Teleoptest1 extends OpMode {
     @Override
     public void loop() {
 
-        mecanumDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+        mecanumDrive(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
         arm(gamepad1.left_trigger);
     }
 
