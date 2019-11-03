@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@Autonomous(name="moveLeftToPark")
-public class moveLeft extends LinearOpMode {
+@Autonomous(name="redRightRepositionPlatform")
+public class redRightRepositionPlatform extends LinearOpMode {
 
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
@@ -21,7 +21,9 @@ public class moveLeft extends LinearOpMode {
 
     //autonomous period
     public void autonomous(){
-        straft(12, 1);
+        forward(72,1);
+        straft(12,1);
+        forward(-72,1);
     }
 
     //moves robot forward x inches with y speed
@@ -64,6 +66,10 @@ public class moveLeft extends LinearOpMode {
         frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //reverses the right motors
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
     //straft robot right x inches with y speed
     public void straft(int inches, int speed) {
@@ -71,6 +77,50 @@ public class moveLeft extends LinearOpMode {
         //reverses the right motors
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //set the target position for each motor
+        frontLeftMotor.setTargetPosition(frontLeftMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
+        frontRightMotor.setTargetPosition(frontRightMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
+        backLeftMotor.setTargetPosition(backLeftMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
+        backRightMotor.setTargetPosition(backRightMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
+
+        //turns on run to position
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // reset the timeout time and start motion.
+        frontLeftMotor.setPower(speed);
+        frontRightMotor.setPower(speed);
+        backLeftMotor.setPower(speed);
+        backRightMotor.setPower(speed);
+
+        //keep looping while we are still active
+        while (opModeIsActive() && frontLeftMotor.isBusy() && frontRightMotor.isBusy() && backLeftMotor.isBusy() && backRightMotor.isBusy()){
+        }
+
+        // Stop all motion;
+        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //reverses the right motors
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+    //turn robot right x degrees with y speed
+    public void turn(int degrees, int speed) {
+
+        //sets degrees to values
+        int inches = degrees/10;
 
         //set the target position for each motor
         frontLeftMotor.setTargetPosition(frontLeftMotor.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH));
