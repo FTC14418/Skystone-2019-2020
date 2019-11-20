@@ -8,6 +8,7 @@ public class Properties {
     public static final String BACK_RIGHT_MOTOR = "backRightMotor";
     public static final String LEFT_ARM = "leftArm";
     public static final String RIGHT_ARM = "rightArm";
+    public static final String LIFT = "lift";
 
     public static final int COUNTS_PER_REV = 0;
 
