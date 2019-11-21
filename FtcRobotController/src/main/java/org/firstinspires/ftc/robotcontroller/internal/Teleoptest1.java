@@ -17,6 +17,13 @@ public class Teleoptest1 extends OpMode {
     private Servo leftArm;
     private Servo rightArm;
 
+    boolean beltStatusArm = false;
+    boolean previousButtonArm = false;
+    boolean currentButtonArm = false;
+    boolean beltStatusLift = false;
+    boolean previousButtonLift = false;
+    boolean currentButtonLift = false;
+
     @Override
     public void init() {
         frontLeftMotor = hardwareMap.dcMotor.get(Properties.FRONT_LEFT_MOTOR);
@@ -29,12 +36,13 @@ public class Teleoptest1 extends OpMode {
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
     public void loop() {
-        mecanumDrive(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_button);
-        arm(gamepad1.left_trigger, gamepad1.right_trigger, gamepad1.right_stick_button, gamepad1.left_stick_button);
+        mecanumDrive(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.left_bumper);
+        arm(gamepad1.left_trigger, gamepad1.right_trigger, gamepad1.right_bumper, gamepad1.a);
     }
 
     private void mecanumDrive(double leftx, double lefty, double rightx, boolean speed) {
@@ -42,8 +50,16 @@ public class Teleoptest1 extends OpMode {
         double fr = lefty+leftx-rightx;
         double bl = lefty+leftx+rightx;
         double br = lefty-leftx-rightx;
-        double speedMultiplier = 0.75;
-        if (speed == true) {
+        double speedMultiplier = 0.25;
+
+        previousButtonLift = currentButtonLift;
+        currentButtonLift = speed;
+
+        if (currentButtonLift && !previousButtonLift)
+        {
+            beltStatusLift = beltStatusLift ? false : true;
+        }
+        if (beltStatusLift) {
             fl *= speedMultiplier;
             fr *= speedMultiplier;
             bl *= speedMultiplier;
@@ -54,18 +70,18 @@ public class Teleoptest1 extends OpMode {
         backLeftMotor.setPower(bl);
         backRightMotor.setPower(br);
     }
-    private void arm(double up, double down, boolean state, boolean speed) {
+    private void arm(double up, double down, boolean state, boolean platform) {
         double lift = 0;
-        double speedMultiplier = 0.75;
         double leftArmPosition = 0;
         double rightArmPosition = 0;
-        if (0 < up) {
-            lift = up;
+
+        previousButtonArm = currentButtonArm;
+        currentButtonArm = state;
+        if (currentButtonArm && !previousButtonArm)
+        {
+            beltStatusArm = beltStatusArm ? false : true;
         }
-        else if (0 < down) {
-            lift = -down;
-        }
-        if (state == true) {
+        if (beltStatusArm) {
             leftArmPosition = 1.0;
             rightArmPosition = 0;
         }
@@ -73,12 +89,22 @@ public class Teleoptest1 extends OpMode {
             leftArmPosition = 0;
             rightArmPosition = 1.0;
         }
-        if (speed == true) {
-            lift *= speedMultiplier;
+
+        if (platform) {
+            lift = -1;
         }
+        else if (0 < up) {
+            lift = up;
+        }
+        else if (0 < down) {
+            lift = -down * .2;
+        }
+        else {
+            lift = .25;
+        }
+
         liftMotor.setPower(lift);
         leftArm.setPosition(leftArmPosition);
         rightArm.setPosition(rightArmPosition);
     }
-
 }
