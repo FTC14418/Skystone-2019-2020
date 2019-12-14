@@ -9,6 +9,9 @@ public class Properties {
     public static final String LEFT_ARM = "leftArm";
     public static final String RIGHT_ARM = "rightArm";
     public static final String LIFT = "lift";
+    public static final String ARM_POT = "armPot";
+    public static final String ARM_COLOR = "armColor";
+
 
     public static final int COUNTS_PER_REV = 0;
 

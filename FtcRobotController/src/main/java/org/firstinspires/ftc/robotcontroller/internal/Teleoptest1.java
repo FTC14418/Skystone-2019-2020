@@ -2,6 +2,8 @@ package org.firstinspires.ftc.robotcontroller.internal;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,6 +18,8 @@ public class Teleoptest1 extends OpMode {
     private DcMotor liftMotor;
     private Servo leftArm;
     private Servo rightArm;
+    private AnalogInput armPot;
+    private ColorSensor armColor;
 
     boolean beltStatusArm = false;
     boolean previousButtonArm = false;
@@ -33,16 +37,23 @@ public class Teleoptest1 extends OpMode {
         liftMotor = hardwareMap.dcMotor.get(Properties.LIFT);
         leftArm = hardwareMap.servo.get(Properties.LEFT_ARM);
         rightArm = hardwareMap.servo.get(Properties.RIGHT_ARM);
+        armPot = hardwareMap.analogInput.get(Properties.ARM_POT);
+        armColor = hardwareMap.get(ColorSensor.class, Properties.ARM_COLOR);
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
     public void loop() {
         mecanumDrive(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.left_bumper);
-        arm(gamepad1.left_trigger, gamepad1.right_trigger, gamepad1.right_bumper, gamepad1.a);
+        arm(gamepad1.right_trigger, gamepad1.left_trigger, gamepad1.right_bumper, gamepad1.a);
+        telemetry.addData("Arm Pot: ", armPot.getVoltage());
+        telemetry.addData("R: ", armColor.red());
+        telemetry.addData("G: ", armColor.green());
+        telemetry.addData("B: ", armColor.blue());
     }
 
     private void mecanumDrive(double leftx, double lefty, double rightx, boolean speed) {
@@ -97,7 +108,7 @@ public class Teleoptest1 extends OpMode {
             lift = up;
         }
         else if (0 < down) {
-            lift = -down * .2;
+            lift = -down*.05;
         }
         else {
             lift = .25;
