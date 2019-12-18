@@ -51,9 +51,7 @@ public class Teleoptest1 extends OpMode {
         mecanumDrive(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.left_bumper);
         arm(gamepad1.right_trigger, gamepad1.left_trigger, gamepad1.right_bumper, gamepad1.a);
         telemetry.addData("Arm Pot: ", armPot.getVoltage());
-        telemetry.addData("R: ", armColor.red());
-        telemetry.addData("G: ", armColor.green());
-        telemetry.addData("B: ", armColor.blue());
+        telemetry.addData("Alpha: ", armColor.alpha());
     }
 
     private void mecanumDrive(double leftx, double lefty, double rightx, boolean speed) {
