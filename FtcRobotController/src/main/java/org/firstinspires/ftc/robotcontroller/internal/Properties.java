@@ -11,6 +11,7 @@ public class Properties {
     public static final String LIFT = "lift";
     public static final String ARM_POT = "armPot";
     public static final String ARM_COLOR = "armColor";
+    public static final String FLOOR_COLOR = "floorColor";
 
 
     public static final int COUNTS_PER_REV = 0;

@@ -20,6 +20,7 @@ public class Teleoptest1 extends OpMode {
     private Servo rightArm;
     private AnalogInput armPot;
     private ColorSensor armColor;
+    private ColorSensor floorColor;
 
     boolean beltStatusArm = false;
     boolean previousButtonArm = false;
@@ -39,6 +40,7 @@ public class Teleoptest1 extends OpMode {
         rightArm = hardwareMap.servo.get(Properties.RIGHT_ARM);
         armPot = hardwareMap.analogInput.get(Properties.ARM_POT);
         armColor = hardwareMap.get(ColorSensor.class, Properties.ARM_COLOR);
+        floorColor = hardwareMap.get(ColorSensor.class, Properties.FLOOR_COLOR);
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -51,7 +53,7 @@ public class Teleoptest1 extends OpMode {
         mecanumDrive(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, gamepad1.left_bumper);
         arm(gamepad1.right_trigger, gamepad1.left_trigger, gamepad1.right_bumper, gamepad1.a);
         telemetry.addData("Arm Pot: ", armPot.getVoltage());
-        telemetry.addData("Alpha: ", armColor.alpha());
+        telemetry.addData("red: ", armColor.red());
     }
 
     private void mecanumDrive(double leftx, double lefty, double rightx, boolean speed) {

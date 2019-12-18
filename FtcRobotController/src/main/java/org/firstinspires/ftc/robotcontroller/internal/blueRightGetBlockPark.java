@@ -20,6 +20,7 @@ public class blueRightGetBlockPark extends LinearOpMode {
     private Servo rightArm;
     private AnalogInput armPot;
     private ColorSensor armColor;
+    private ColorSensor floorColor;
 
     boolean beltStatusArm = false;
     boolean previousButtonArm = false;
@@ -45,47 +46,91 @@ public class blueRightGetBlockPark extends LinearOpMode {
         rightArm = hardwareMap.servo.get(Properties.RIGHT_ARM);
         armPot = hardwareMap.analogInput.get(Properties.ARM_POT);
         armColor = hardwareMap.get(ColorSensor.class, Properties.ARM_COLOR);
+        floorColor = hardwareMap.get(ColorSensor.class, Properties.FLOOR_COLOR);
+
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         waitForStart();
         autonomous();
     }
 
     //autonomous period
     public void autonomous() {
-        arm(0);
-//      change to 30 inches
-        forward(12, .5);
+        arm(1);
+        frontLeftMotor.setPower(.5);
+        frontRightMotor.setPower(.5);
+        backLeftMotor.setPower(.5);
+        backRightMotor.setPower(.5);
+        while (armColor.red() < 170){
+            telemetry.addData("red: ", armColor.red());
+            telemetry.update();
+        }
+        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
         for(int i = 0; i < 2; i++){
+            telemetry.addData("alpha: ", armColor.alpha());
+            telemetry.update();
             if(armColor.alpha() < 1000){
                 frontLeftMotor.setPower(.25);
                 frontRightMotor.setPower(-.25);
                 backLeftMotor.setPower(-.25);
                 backRightMotor.setPower(.25);
-                sleep(1000);
+                sleep(2000);
                 frontLeftMotor.setPower(0);
                 frontRightMotor.setPower(0);
                 backLeftMotor.setPower(0);
                 backRightMotor.setPower(0);
+                sleep(2000);
             }
             else{
                 break;
             }
         }
-        arm(1);
-        forward(4,.5);
-        arm(0);
         frontLeftMotor.setPower(.5);
         frontRightMotor.setPower(.5);
         backLeftMotor.setPower(.5);
         backRightMotor.setPower(.5);
+        sleep(500);
+        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+        sleep(2000);
+        arm(0);
+        frontLeftMotor.setPower(-.5);
+        frontRightMotor.setPower(-.5);
+        backLeftMotor.setPower(-.5);
+        backRightMotor.setPower(-.5);
+        sleep(1000);
+        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+        sleep(1000);
+        frontLeftMotor.setPower(.25);
+        frontRightMotor.setPower(-.25);
+        backLeftMotor.setPower(-.25);
+        backRightMotor.setPower(.25);
+        //change at competition
         sleep(2000);
         frontLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
-//        arm(1);
-//        forward(5,.5);
-//        arm(0);
-//        backward(12,.5);
+        arm(1);
+        frontLeftMotor.setPower(-.25);
+        frontRightMotor.setPower(.25);
+        backLeftMotor.setPower(.25);
+        backRightMotor.setPower(-.25);
+        //change at competition
+        sleep(2000);
+        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
     }
 
     //open arms
