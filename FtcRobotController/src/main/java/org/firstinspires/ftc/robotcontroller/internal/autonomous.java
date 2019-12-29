@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name="test")
-public class blueRightGetBlockPark extends LinearOpMode {
+@Autonomous(name="z")
+public class autonomous extends LinearOpMode {
 
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;

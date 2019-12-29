@@ -54,6 +54,9 @@ public class Teleoptest1 extends OpMode {
         arm(gamepad1.right_trigger, gamepad1.left_trigger, gamepad1.right_bumper, gamepad1.a);
         telemetry.addData("Arm Pot: ", armPot.getVoltage());
         telemetry.addData("red: ", armColor.red());
+        telemetry.addData("green: ", armColor.green());
+        telemetry.addData("blue: ", armColor.blue());
+        telemetry.addData("alpha: ", armColor.alpha());
     }
 
     private void mecanumDrive(double leftx, double lefty, double rightx, boolean speed) {
@@ -111,7 +114,7 @@ public class Teleoptest1 extends OpMode {
             lift = -down*.05;
         }
         else {
-            lift = .25;
+            lift = .2;
         }
 
         liftMotor.setPower(lift);
